@@ -118,3 +118,19 @@ var completePurchase = function(availableStock, price, productSales, productDepa
 
  
 
+var updateDepartmentRevenue = function(updatedProductSales, productDepartment) {
+
+	 
+	var query = "Select total_sales FROM departments WHERE ?";
+	connection.query(query, { department_name: productDepartment}, function(err, res) {
+
+		if (err) throw err;
+
+		var departmentSales = res[0].total_sales;
+
+		var updatedDepartmentSales = parseInt(departmentSales) + parseInt(updatedProductSales);
+
+		 
+		completeDepartmentSalesUpdate(updatedDepartmentSales, productDepartment);
+	});
+};
