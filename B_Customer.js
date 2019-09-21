@@ -22,7 +22,7 @@ connection.connect(function(err) {
 
  
 var Show_Products = function() {
-	var query = "Select * FROM products";
+	var query = "Select item_id,product_name,department_name,price,stock from products lef join departments using (department_id)";
 	connection.query(query, function(err, res) {
 
 		if (err) throw err; 
@@ -54,10 +54,10 @@ var Call_Product = function() {
 			}
 			return false
 		}
-	}]).then(function(answer) {
+	},]).then(function(answer) {
 
  
-		var query = "Select stock, price, product_sales, department_name FROM products WHERE ?";
+		var query = "Select stock, price, product_sales, department_id FROM products WHERE ?";
 		connection.query(query, { item_id: answer.productID}, function(err, res) {
 			
 			if (err) throw err;
@@ -65,7 +65,7 @@ var Call_Product = function() {
 			var available_stock = res[0].stock;
 			var price_per_unit = res[0].price;
 			var productSales = res[0].product_sales;
-			var productDepartment = res[0].department_name;
+			var productDepartment = res[0].department_id;
 
 		 
 			if (available_stock >= answer.productUnits) {
@@ -122,7 +122,7 @@ var updateDepartmentRevenue = function(updatedProductSales, productDepartment) {
 
 	 
 	var query = "Select total_sales FROM departments WHERE ?";
-	connection.query(query, { department_name: productDepartment}, function(err, res) {
+	connection.query(query, { department_id: productDepartment}, function(err, res) {
 
 		if (err) throw err;
 
@@ -132,5 +132,23 @@ var updateDepartmentRevenue = function(updatedProductSales, productDepartment) {
 
 		 
 		completeDepartmentSalesUpdate(updatedDepartmentSales, productDepartment);
+	});
+};
+
+
+
+var completeDepartmentSalesUpdate = function(updatedDepartmentSales, productDepartment) {
+
+	var query = "UPDATE departments SET ? WHERE ?";
+	connection.query(query, [{
+		total_sales: updatedDepartmentSales
+	}, {
+		department_name: productDepartment
+	}], function(err, res) {
+
+		if (err) throw err;
+
+		 
+		Show_Products();
 	});
 };
