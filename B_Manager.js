@@ -29,7 +29,8 @@ var selectAction = function () {
 				"View Products for Sale",
 				"View Low Inventory",
 				"Add to Inventory",
-				"Add New Product"
+				"Add New Product",
+				"Exit"
 			]
 		}
 	]).then(function (answer) {

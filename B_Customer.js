@@ -122,7 +122,7 @@ var updateDepartmentRevenue = function(updatedProductSales, productDepartment) {
 
 	 
 	var query = "Select total_sales FROM departments WHERE ?";
-	connection.query(query, { department_id: productDepartment}, function(err, res) {
+	connection.query(query, { department_id:productDepartment}, function(err, res) {
 
 		if (err) throw err;
 
@@ -147,8 +147,6 @@ var completeDepartmentSalesUpdate = function(updatedDepartmentSales, productDepa
 	}], function(err, res) {
 
 		if (err) throw err;
-
-		 
 		Show_Products();
 	});
 };
