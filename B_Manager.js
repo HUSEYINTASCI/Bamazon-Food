@@ -1,6 +1,8 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 
+//  Sql connection
+//----------------------------------------------------------------------------------------------------------------------------
 
 var connection = mysql.createConnection({
 	host: "localhost",
@@ -18,7 +20,11 @@ connection.connect(function (err) {
 
 
 });
+ 
 
+//----------------------------------------------------------------------------------------------------------------------------
+
+//  inquirer the user ----------------------------------------------------------------------------------------------------------------
 var selectAction = function () {
 	inquirer.prompt([
 		{
@@ -58,7 +64,7 @@ var selectAction = function () {
 	});
 };
 
-
+// Listing Products -------------------------------------------------------------------------------------------------------------
 var viewProducts = function () {
 	var query = "Select * FROM products";
 	connection.query(query, function (err, res) {
@@ -70,7 +76,7 @@ var viewProducts = function () {
 	});
 };
 
-
+// Viewing Inventory-------------------------------------------------------------------------------------------------------------
 var viewLowInventory = function () {
 	var query = "SELECT item_id, product_name, stock FROM products WHERE stock < 5";
 	connection.query(query, function (err, res) {
@@ -82,7 +88,7 @@ var viewLowInventory = function () {
 	});
 };
 
-
+// Adding Product Stock----------------------------------------------------------------------------------------------------------
 var addInventory = function () {
 
 	inquirer.prompt([
@@ -135,8 +141,9 @@ var addInventory = function () {
 
 	});
 };
+//---------------------------------------------------------------------------------------------------------------------------------
 
-
+// adding new Product ----------------------------------------------------------------------------------------------------------------
 var addProduct = function () {
 	inquirer.prompt([{
 		name: "product_name",
@@ -194,7 +201,7 @@ var checkIfDepartmentExists = function (departmentName) {
 };
 
 
-
+// Adding new department ---------------------------------------------------------------------------------------------------------
 var addNewDepartment = function (departmentName) {
 	console.log('We will add this new department: ' + departmentName);
 
@@ -209,3 +216,5 @@ var addNewDepartment = function (departmentName) {
 		}
 	});
 };
+
+//-----------------------------------------------------------------------------------------------------------------------------

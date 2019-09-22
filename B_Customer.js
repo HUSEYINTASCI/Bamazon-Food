@@ -2,7 +2,8 @@ require("dotenv").config();
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 
- 
+//  Sql connection
+//----------------------------------------------------------------------------------------------------------------------------
 var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
@@ -19,8 +20,8 @@ connection.connect(function(err) {
   Show_Products();
 
 });
-
- 
+//----------------------------------------------------------------------------------------------------------------------------------
+// Listing Products 
 var Show_Products = function() {
 	var query = "Select item_id,product_name,department_name,price,stock from products lef join departments using (department_id)";
 	connection.query(query, function(err, res) {
@@ -32,7 +33,7 @@ var Show_Products = function() {
 	});
 };
 
- 
+//  inquirer the user ----------------------------------------------------------------------------------------------------------------
 var Call_Product = function() {
 	inquirer.prompt([{
 		name: "productID",
@@ -81,20 +82,16 @@ var Call_Product = function() {
 	});
 };
 
-
- 
+//--------------------------------------------------------------------------------------------------------------------------------
+//  After Purchase updating ------------------------------------------------------------------------------------------------------
 var completePurchase = function(availableStock, price, productSales, productDepartment, selectedProductID, selectedProductUnits) {
-	
- 
-	var updatedStockQuantity = availableStock - selectedProductUnits;
 
+	var updatedStockQuantity = availableStock - selectedProductUnits;
 	 
 	var totalPrice = price * selectedProductUnits;
-
  
 	var updatedProductSales = parseInt(productSales) + parseInt(totalPrice);
-	
- 
+	 
 	var query = "UPDATE products SET ? WHERE ?";
 	connection.query(query, [{
 		stock: updatedStockQuantity,
@@ -107,10 +104,8 @@ var completePurchase = function(availableStock, price, productSales, productDepa
 	 
 		console.log("Your purchase is complete.");
 
-	 
 		console.log("You payment has been received in the amount of : " + totalPrice);
 
-	 
 		updateDepartmentRevenue(updatedProductSales, productDepartment);
 		 
 	});
@@ -129,7 +124,7 @@ var updateDepartmentRevenue = function(updatedProductSales, productDepartment) {
 		var departmentSales = res[0].total_sales;
 
 		var updatedDepartmentSales = parseInt(departmentSales) + parseInt(updatedProductSales);
-
+				 
 		 
 		completeDepartmentSalesUpdate(updatedDepartmentSales, productDepartment);
 	});
@@ -143,10 +138,11 @@ var completeDepartmentSalesUpdate = function(updatedDepartmentSales, productDepa
 	connection.query(query, [{
 		total_sales: updatedDepartmentSales
 	}, {
-		department_name: productDepartment
+		department_id: productDepartment
 	}], function(err, res) {
 
 		if (err) throw err;
 		Show_Products();
 	});
 };
+//--------------------------------------------------------------------------------------------------------------

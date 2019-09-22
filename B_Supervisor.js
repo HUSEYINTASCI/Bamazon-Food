@@ -1,6 +1,8 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
  
+//  Sql connection
+//----------------------------------------------------------------------------------------------------------------------------
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -17,6 +19,7 @@ connection.connect(function(err) {
 
 });
 
+//  inquirer the user ----------------------------------------------------------------------------------------------------------------
 
 var selectAction = function() {
 	inquirer.prompt([
@@ -49,7 +52,8 @@ var selectAction = function() {
 	});
 };
 
- 
+//  Listing departments -----------------------------------------------------------------------------------------------
+
 var viewDepartmentSales = function() {
 	var query = "Select department_id AS department_id, department_name AS department_name," +
 				"over_head_costs AS over_head_costs, total_sales AS total_sales," +
@@ -64,7 +68,7 @@ var viewDepartmentSales = function() {
 	});
 };
 
- 
+//  Adding New Department --------------------------------------------------------------------------------------------
 var createDepartment = function() {
 		inquirer.prompt([{
 		name: "department_name",
