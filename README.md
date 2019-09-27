@@ -16,8 +16,7 @@ Bamazon Food uses these node modules;
 --> nmp i inquirer
 
 --> npm i console.table
-
---> npm i fast-csv
+ 
 
 
 

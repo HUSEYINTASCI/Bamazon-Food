@@ -2,7 +2,7 @@ var mysql = require("mysql");
 var inquirer = require("inquirer");
 
 //  Sql connection
-//----------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------
 
 var connection = mysql.createConnection({
 	host: "localhost",
@@ -22,7 +22,7 @@ connection.connect(function (err) {
 });
  
 
-//----------------------------------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------------------------------
 
 //  inquirer the user ----------------------------------------------------------------------------------------------------------------
 var selectAction = function () {
@@ -82,9 +82,7 @@ var viewLowInventory = function () {
 	connection.query(query, function (err, res) {
 		if (err) throw err;
 		console.table(res);
-
-
-		selectAction();
+ 			selectAction();
 	});
 };
 
@@ -164,11 +162,12 @@ var addProduct = function () {
 	}]).then(function (answer) {
 		connection.query("INSERT INTO products SET ?", {
 			product_name: answer.product_name,
-			department_name: answer.department_name,
+			department_id: answer.department_name,
 			price: answer.price,
 			stock: answer.stock
 		}, function (err, res) {
 			if (err) {
+				
 				throw err;
 			} else {
 				console.log("Your product was added successfully!");
